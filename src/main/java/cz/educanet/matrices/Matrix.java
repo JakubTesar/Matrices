@@ -5,15 +5,11 @@ import java.lang.reflect.Array;
 public class Matrix implements IMatrix {
 
     private final double[][] rawArray;
-    private final IMatrixFactory matrixFactory = MatrixFactory.instance;
 
     public Matrix(double[][] rawArray) {
         this.rawArray = rawArray;
     }
 
-    /**
-     * TODO: Implement
-     */
     @Override
     public IMatrix times(IMatrix matrix) {
         Matrix a = new Matrix(rawArray);
@@ -23,10 +19,14 @@ public class Matrix implements IMatrix {
         if (a.getColumns() != b.getRows())
             throw new IllegalArgumentException();
 
-        for (int i = 0; i < c; i++) {
-
+        for (int i = 0; i < a.getRows(); i++) {
+            for (int j = 0; j < b.getColumns(); j++) {
+                for (int k = 0; k < b.getRows(); k++) {
+                    c[i][j] += a.get(i,k) * b.get(k,j);
+                }
+            }
         }
-        return null;
+        return new Matrix(c);
     }
 
     @Override
@@ -41,7 +41,6 @@ public class Matrix implements IMatrix {
     @Override
     public IMatrix add(IMatrix matrix) {
         double[][] timedMatrix = rawArray;
-        Matrix matrix1 = (Matrix) matrix;
         for (int i = 0; i < timedMatrix.length; i++)
             for (int j = 0; j < timedMatrix.length; j++)
                 timedMatrix[i][j] += matrix.get(i, j);
@@ -59,7 +58,7 @@ public class Matrix implements IMatrix {
     }
 
     /**
-     * TODO: Implement
+     * TODO: 4x4 and more
      */
     @Override
     public double determinant() {
@@ -81,7 +80,7 @@ public class Matrix implements IMatrix {
 
     @Override
     public boolean isSquare() {
-        return rawArray.length == rawArray[0].length;
+        return rawArray.length == rawArray[0].length && rawArray.length > 1;
     }
 
     @Override

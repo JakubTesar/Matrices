@@ -13,6 +13,7 @@ public class MatrixFactory implements IMatrixFactory {
 
     @Override
     public IMatrix createDiagonal(double[] diagonal) {
+        if (diagonal.length == 0) throw new IllegalArgumentException();
         double[][] matrixDiagonal = new double[diagonal.length][diagonal.length];
         for (int i = 0; i < diagonal.length; i++)
             matrixDiagonal[i][i] = diagonal[i];
@@ -21,6 +22,7 @@ public class MatrixFactory implements IMatrixFactory {
 
     @Override
     public IMatrix createIdentity(int size) {
+        if (size < 0) throw new IllegalArgumentException();
         double[][] matrixIdentity = new double[size][size];
         for (int i = 0; i < size; i++)
             matrixIdentity[i][i] = 1;
@@ -29,9 +31,7 @@ public class MatrixFactory implements IMatrixFactory {
 
     @Override
     public IMatrix createZero(int size) {
-        if (size < 0)
-            throw new IllegalArgumentException();
-
+        if (size < 0) throw new IllegalArgumentException();
         return new Matrix(new double[size][size]);
     }
 }
