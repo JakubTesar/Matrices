@@ -20,9 +20,9 @@ public class CreateIdentityMatrixTest {
     }
 
     @Test
-    public void should_ThrowException_When_DiagonalIsEmpty() {
-        double[] emptyDiagonal = {};
-        Assertions.assertThrows(IllegalArgumentException.class, () -> matrixFactory.createDiagonal(emptyDiagonal));
+    public void should_ThrowException_When_SizeIsLessThanZero() {
+        int size = -1;
+        Assertions.assertThrows(IllegalArgumentException.class, () -> matrixFactory.createIdentity(size));
     }
 
     public void assertIdentity(IMatrix matrix, int size) {

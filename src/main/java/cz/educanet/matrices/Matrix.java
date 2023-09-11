@@ -19,13 +19,10 @@ public class Matrix implements IMatrix {
         if (a.getColumns() != b.getRows())
             throw new IllegalArgumentException();
 
-        for (int i = 0; i < a.getRows(); i++) {
-            for (int j = 0; j < b.getColumns(); j++) {
-                for (int k = 0; k < b.getRows(); k++) {
+        for (int i = 0; i < a.getRows(); i++)
+            for (int j = 0; j < b.getColumns(); j++)
+                for (int k = 0; k < b.getRows(); k++)
                     c[i][j] += a.get(i,k) * b.get(k,j);
-                }
-            }
-        }
         return new Matrix(c);
     }
 
@@ -70,9 +67,6 @@ public class Matrix implements IMatrix {
                 return ((a[0][0] * a[1][1]) - (a[1][0] * a[0][1]));
             if (a.length == 3)
                 return ((a[0][0] * a[1][1] * a[2][2] + a[0][1] * a[1][2] * a[2][1] + a[0][2] * a[1][1] * a[2][2]) - (a[2][0] * a[1][1] * a[0][2] + a[2][1] * a[1][2] * a[0][1] + a[2][2] * a[1][1] * a[0][2]));
-            if (a.length == 4) {
-
-            }
             return 0;
         } else
             throw new RuntimeException("Matice není čtvercová");
@@ -85,13 +79,10 @@ public class Matrix implements IMatrix {
 
     @Override
     public boolean isDiagonal() {
-        if (isSquare()) {
             double[][] matrixDiagonal = new double[rawArray.length][rawArray[0].length];
             for (int i = 0; i < rawArray.length; i++)
                 matrixDiagonal[i][i] = rawArray[i][i];
             return matrixDiagonal.equals(rawArray);
-        } else
-            throw new RuntimeException("Matice není čtvercová");
     }
 
     @Override
