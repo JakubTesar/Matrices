@@ -1,6 +1,6 @@
 package cz.educanet.matrices;
 
-import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class Matrix implements IMatrix {
 
@@ -19,10 +19,14 @@ public class Matrix implements IMatrix {
         if (a.getColumns() != b.getRows())
             throw new IllegalArgumentException();
 
-        for (int i = 0; i < a.getRows(); i++)
-            for (int j = 0; j < b.getColumns(); j++)
-                for (int k = 0; k < b.getRows(); k++)
-                    c[i][j] += a.get(i,k) * b.get(k,j);
+        for (int i = 0; i < c.length; i++) {
+            for (int j = 0; j < c[i].length; j++) {
+                for (int k = 0; k < b.getRows(); k++) {
+                    c[i][j] += (a.get(i, k) * b.get(k, j));
+                }
+            }
+        }
+
         return new Matrix(c);
     }
 
@@ -30,7 +34,7 @@ public class Matrix implements IMatrix {
     public IMatrix times(Number scalar) {
         double[][] timedMatrix = rawArray;
         for (int i = 0; i < timedMatrix.length; i++)
-            for (int j = 0; j < timedMatrix.length; j++)
+            for (int j = 0; j < timedMatrix[i].length; j++)
                 timedMatrix[i][j] *= (int) scalar;
         return new Matrix(timedMatrix);
     }
@@ -39,7 +43,7 @@ public class Matrix implements IMatrix {
     public IMatrix add(IMatrix matrix) {
         double[][] timedMatrix = rawArray;
         for (int i = 0; i < timedMatrix.length; i++)
-            for (int j = 0; j < timedMatrix.length; j++)
+            for (int j = 0; j < timedMatrix[0].length; j++)
                 timedMatrix[i][j] += matrix.get(i, j);
         return new Matrix(timedMatrix);
     }
@@ -47,9 +51,9 @@ public class Matrix implements IMatrix {
     @Override
     public IMatrix transpose() {
         double[][] inputMatrix = rawArray;
-        double[][] tMatrix = rawArray;
+        double[][] tMatrix = new double[rawArray.length][rawArray[0].length];
         for (int i = 0; i < inputMatrix.length; i++)
-            for (int j = 0; j < inputMatrix.length; j++)
+            for (int j = 0; j < inputMatrix[0].length; j++)
                 tMatrix[i][j] = inputMatrix[j][i];
         return new Matrix(tMatrix);
     }
@@ -74,15 +78,17 @@ public class Matrix implements IMatrix {
 
     @Override
     public boolean isSquare() {
-        return rawArray.length == rawArray[0].length && rawArray.length > 1;
+        return rawArray.length == rawArray[0].length;
     }
 
     @Override
     public boolean isDiagonal() {
-            double[][] matrixDiagonal = new double[rawArray.length][rawArray[0].length];
-            for (int i = 0; i < rawArray.length; i++)
-                matrixDiagonal[i][i] = rawArray[i][i];
-            return matrixDiagonal.equals(rawArray);
+        if (!isSquare())
+            throw new IllegalArgumentException();
+        double[][] matrixDiagonal = new double[rawArray.length][rawArray[0].length];
+        for (int i = 0; i < rawArray.length; i++)
+            matrixDiagonal[i][i] = rawArray[i][i];
+        return Arrays.deepEquals(matrixDiagonal, rawArray);
     }
 
     @Override
